@@ -21,6 +21,7 @@ This is a full-featured e-commerce web application built with **Django**, based 
 
 ## 🔧 Tech Stack
 
+- **Python**: 3.13.2  
 - **Backend**: Django
 - **Frontend**: HTML5, CSS3, Bootstrap (Aviato Template)
 - **Database**: SQLite (for dev), ready for PostgreSQL
