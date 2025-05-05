@@ -4,6 +4,7 @@ from django_countries.fields import CountryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from etc.choices import USER_TYPE_CHOICES, GENDER_CHOICES
+from etc.helper_functions import profile_image_uploader
 # Create your models here.
 class CustomUser(AbstractUser):
     type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
@@ -16,7 +17,7 @@ class CustomUser(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     address = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='', null=True, blank=True)
+    image = models.ImageField(upload_to=profile_image_uploader, null=True, blank=True)
     country = CountryField(blank_label='(select country)')
     phone = models.CharField(max_length=15)
     date_of_birth = models.DateField(help_text="Format: YYYY-MM-DD")

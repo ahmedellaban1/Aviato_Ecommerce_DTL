@@ -13,7 +13,7 @@ def file_rename(file_name, number_of_digits):
     return f"{random_number}.{extension}", formatted_date
 
 
-def profile_image_uploader(file, instance):
+def profile_image_uploader(instance, file):
     file_name, file_date = file_rename(file, 10)
-    return f"Profile/{file_date}/{instance.id}-{instance.username}-{file_name}"
+    return f"Profile/{file_date}/{instance.id}-{instance.user}-{file_name}"
 
