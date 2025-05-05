@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Profile
+from .models import CustomUser, Profile, Address
 # Register your models here.
 class CustomAdmin(admin.ModelAdmin):
     list_display = ('username', 'type', 'email', 'is_superuser', 'is_staff', 'is_active')
@@ -11,5 +11,11 @@ class ProfileAdmin(admin.ModelAdmin):
     search_fields = ('user', 'country', 'gender')
     list_filter = ('gender',)
 
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ('user', 'country', 'company')
+    search_fields = ('user', 'country', 'company')
+    list_filter = ('country',)
+
 admin.site.register(CustomUser, CustomAdmin)
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Address, AddressAdmin)

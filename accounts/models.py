@@ -33,3 +33,15 @@ class Profile(models.Model):
         return f"{self.user.username}'s profile"
 
 
+class Address(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    company = models.CharField(max_length=20)
+    address = models.CharField(max_length=255)
+    country = CountryField(blank_label='(select country)')
+    phone = models.CharField(max_length=15)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    last_appear = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user}-{self.address}"
