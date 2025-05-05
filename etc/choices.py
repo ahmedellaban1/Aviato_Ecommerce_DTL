@@ -4,3 +4,9 @@ USER_TYPE_CHOICES = [
     ('seller', 'Seller'),
     ('developer', 'Developer'),
 ]
+
+
+GENDER_CHOICES = (
+    ('male', 'Male'),
+    ('female', 'Female'),
+)
