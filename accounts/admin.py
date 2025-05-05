@@ -8,12 +8,12 @@ class CustomAdmin(admin.ModelAdmin):
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'country', 'gender')
-    search_fields = ('user', 'country', 'gender')
+    search_fields = ('country', 'gender')
     list_filter = ('gender',)
 
 class AddressAdmin(admin.ModelAdmin):
     list_display = ('user', 'country', 'company')
-    search_fields = ('user', 'country', 'company')
+    search_fields = ('country', 'company')
     list_filter = ('country',)
 
 admin.site.register(CustomUser, CustomAdmin)
