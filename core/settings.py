@@ -29,6 +29,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+# Override built-in User
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+
 # Application definition
 
 INSTALLED_APPS = [
