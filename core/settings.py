@@ -49,11 +49,16 @@ INSTALLED_APPS = [
     'messaging',
     'orderhub',
 
-     # installed apps
-
+     # third-party
+    'django_countries',
+    'bootstrap4',
+    'django_filters',
+    'debug_toolbar',
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'core.urls'
