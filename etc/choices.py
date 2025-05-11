@@ -45,3 +45,12 @@ COLOR_CHOICES = [
     ('#F5F5DC', 'Beige'),
     ('#D2691E', 'Chocolate'),
 ]
+
+
+MEDIA_TYPE_CHOICES = [
+    ('image', 'Image'),
+    ('video', 'Video'),
+    ('audio', 'Audio'),
+    ('document', 'Document'),
+    ('other', 'Other'),
+]
