@@ -16,6 +16,6 @@ class AddressAdmin(admin.ModelAdmin):
     search_fields = ('country', 'company')
     list_filter = ('country',)
 
-admin.site.register(CustomUser, CustomAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Address, AddressAdmin)
