@@ -22,3 +22,8 @@ def product_media_uploader(instance, filename):
     file_name, file_date = file_rename(filename, 10)
     return f"Product/{instance.media_type.title()}/{file_date}/{instance.product.id}-{file_name}"
 
+
+def category_media_uploader(instance, filename):
+    file_name, file_date = file_rename(filename, 10)
+    return f"Category/{instance.media_type.title()}/{file_date}/{instance.category.id}-{file_name}"
+
