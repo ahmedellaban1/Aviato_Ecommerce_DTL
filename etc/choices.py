@@ -54,3 +54,12 @@ MEDIA_TYPE_CHOICES = [
     ('document', 'Document'),
     ('other', 'Other'),
 ]
+
+INVOICE_STATUS = (
+    ("pending", "Pending"),
+    ("paid", "Paid"),
+    ("shipped", "Shipped"),
+    ("delivered", "Delivered"),
+    ("cancelled", "Cancelled"),
+    ("refunded", "Refunded"),
+)
