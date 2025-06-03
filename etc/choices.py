@@ -63,3 +63,11 @@ INVOICE_STATUS = (
     ("cancelled", "Cancelled"),
     ("refunded", "Refunded"),
 )
+
+
+PAYMENT_LOG_STATUS = (
+    ('completed', 'Completed'),
+    ('failed', 'Failed'),
+    ('refunded', 'Refunded'),
+    ('gateway_timeout_ends', 'Gateway Timeout Ends'),
+)
