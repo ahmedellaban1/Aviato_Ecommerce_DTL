@@ -5,6 +5,8 @@ from etc.helper_functions import product_media_uploader, category_media_uploader
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.db.models import Q
+
 
 
 class Product(models.Model):
@@ -80,6 +82,15 @@ class ProductMedia(models.Model):
     is_main = models.BooleanField(default=False)  # Flag for primary product image
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['product'],
+                condition=Q(is_main=True),
+                name='unique_main_image_per_product'
+            )
+        ]
 
     def __str__(self):
         return str(self.file_url)
@@ -196,10 +207,9 @@ class Sale(models.Model):
 
     class Meta:
         constraints = [
-            # Ensure a product can only have one active sale at a time
             models.UniqueConstraint(
-                fields=['product', 'is_active'],
-                condition=models.Q(end_date__gte=timezone.now()),
+                fields=['product'],
+                condition=Q(is_active=True),
                 name='only_one_active_sale_per_product'
             )
         ]
