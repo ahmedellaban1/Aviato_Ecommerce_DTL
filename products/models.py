@@ -198,7 +198,7 @@ class Sale(models.Model):
         constraints = [
             # Ensure a product can only have one active sale at a time
             models.UniqueConstraint(
-                fields=['product'],
+                fields=['product', 'is_active'],
                 condition=models.Q(end_date__gte=timezone.now()),
                 name='only_one_active_sale_per_product'
             )
