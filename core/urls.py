@@ -5,9 +5,11 @@ from django.urls import path, include
 import debug_toolbar
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
+    path('', include('products.urls', namespace='products'))
 
 ]
 
