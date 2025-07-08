@@ -54,7 +54,6 @@ def shop_products_view(request, *args, **kwargs):
     ).prefetch_related(
         Prefetch('productmedia_set', queryset=product_media_qs)
     ).order_by('-created_at')
-    print(products_queryset.query)
 
     paginator = Paginator(products_queryset, 9)
     page_number = request.GET.get('page')
