@@ -62,7 +62,7 @@
 			<div class="col-md-4 col-xs-12 col-sm-4">
 				<!-- Site Logo -->
 				<div class="logo text-center">
-					<a href="index.html">
+					<a href="{% url 'products-main-url:home-page-url' %}">
 						<!-- replace logo here -->
 						<svg width="135px" height="29px" viewBox="0 0 155 29" version="1.1" xmlns="http://www.w3.org/2000/svg"
 							xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -178,9 +178,12 @@
 
 					<!-- Home -->
 					<li class="dropdown ">
-						<a href="index.html">Home</a>
+						<a href="{% url 'products-main-url:home-page-url' %}">Home</a>
 					</li><!-- / Home -->
-
+											
+					<li class="dropdown ">
+						<a href="/admin/">Admin</a>
+					</li><!-- / Home -->
 
 					<!-- Elements -->
 					<li class="dropdown dropdown-slide">
@@ -195,7 +198,7 @@
 									<ul>
 										<li class="dropdown-header">Pages</li>
 										<li role="separator" class="divider"></li>
-										<li><a href="shop.html">Shop</a></li>
+										<li><a href="{% url 'products-main-url:shop-products-url' %}">Shop</a></li>
 										<li><a href="checkout.html">Checkout</a></li>
 										<li><a href="cart.html">Cart</a></li>
 										<li><a href="pricing.html">Pricing</a></li>
@@ -266,7 +269,7 @@
 
 								<!-- Mega Menu -->
 								<div class="col-sm-3 col-xs-12">
-									<a href="shop.html">
+									<a href="{% url 'products-main-url:shop-products-url' %}">
 										<img class="img-responsive" src="{% static 'images/shop/header-img.jpg' %}" alt="menu image" />
 									</a>
 								</div>
@@ -311,6 +314,38 @@
 {% block container %}
 <!-- content of the page will inherit this page -->
 {% endblock %}
+
+		<!-- Modal -->
+		<div class="modal product-modal fade" id="product-modal">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<i class="tf-ion-close"></i>
+			</button>
+		  	<div class="modal-dialog " role="document">
+		    	<div class="modal-content">
+			      	<div class="modal-body">
+			        	<div class="row">
+			        		<div class="col-md-8 col-sm-6 col-xs-12">
+			        			<div class="modal-image">
+				        			<img class="img-responsive" id="modal-product-image" src="" alt="product-img" />
+			        			</div>
+			        		</div>
+			        		<div class="col-md-4 col-sm-6 col-xs-12">
+			        			<div class="product-short-details">
+			        				<h2 class="product-title" id="modal-product-title">GM Pendant, Basalt Grey</h2>
+			        				<p class="product-price" id="modal-product-price">$200</p>
+			        				<p class="product-short-description" id="modal-product-description">
+			        					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem iusto nihil cum. Illo laborum numquam rem aut officia dicta cumque.
+			        				</p>
+			        				<a href="cart.html" class="btn btn-main">Add To Cart</a>
+			        				<a href="product-single.html" class="btn btn-transparent">View Product Details</a>
+			        			</div>
+			        		</div>
+			        	</div>
+			        </div>
+		    	</div>
+		  	</div>
+		</div><!-- /.modal -->
+
 <footer class="footer section text-center">
 	<div class="container">
 		<div class="row">
@@ -342,7 +377,7 @@
 						<a href="contact.html">CONTACT</a>
 					</li>
 					<li>
-						<a href="shop.html">SHOP</a>
+						<a href="{% url 'products-main-url:shop-products-url' %}">SHOP</a>
 					</li>
 					<li>
 						<a href="pricing.html">Pricing</a>
@@ -384,7 +419,19 @@
 
     <!-- Main Js File -->
     <script src="{% static 'js/script.js' %}"></script>
+	<script>
+		function openProductModal(el) {
+			const title = el.dataset.title;
+			const price = el.dataset.price;
+			const description = el.dataset.description;
+			const imageUrl = el.dataset.image;
 
+			document.getElementById("modal-product-title").textContent = title;
+			document.getElementById("modal-product-price").textContent = `$${price}`;
+			document.getElementById("modal-product-description").textContent = description;
+			document.getElementById("modal-product-image").src = imageUrl;
+		}
+	</script>
 
 
   </body>
