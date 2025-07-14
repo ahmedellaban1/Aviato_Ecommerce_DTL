@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from products.models import Sale, Product, ProductMedia
+from products.models import Sale, Product, ProductMedia, ProductColor, ProductSize
 from django.utils import timezone
 from django.db.models import Prefetch
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 
 
 # index page 
@@ -33,11 +34,14 @@ def home_page_view(request):
         last_sale_product = Product.objects.prefetch_related(
             Prefetch('productmedia_set', queryset=product_media_qs)
         ).get(pk=last_sale.product.pk)
+        sale_media = last_sale_product.productmedia_set.all().first(), 
+    else:
+        sale_media = None
 
     context = {
         'products': queryset,
         'sale': last_sale_product,
-        'sale_media': last_sale_product.productmedia_set.all().first(),
+        'sale_media': sale_media, 
         "page_title": 'Home',
     }
     print(product_media_qs.all())
@@ -64,3 +68,20 @@ def shop_products_view(request, *args, **kwargs):
         'products': page_obj,
     }
     return render(request, 'shop.html', context)
+
+
+def product_details_view(requst, *arg, **kwargs):
+    product = get_object_or_404(Product, pk=kwargs['pk'])
+
+    product_media_set = ProductMedia.objects.only(
+        'id', 'file_url', 'alt_text'
+    ).filter(product=product)
+
+    # TODO: get color and size 
+
+    context = {
+        'product': product,
+        'images': product_media_set, 
+        'page_title': f'ditails of product {product.id}'
+    }
+    return render(requst, 'product_details.html', context)
