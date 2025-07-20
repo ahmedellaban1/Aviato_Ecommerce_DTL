@@ -28,7 +28,6 @@ env/
 .idea/
 
 # Static files and media directories (if you are using them)
-static/
 media/
 
 # PyCharm
