@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('accounts', '0002_alter_profile_image'),
-        ('products', '0015_remove_sale_only_one_active_sale_per_product_and_more'),
+        ('products', '0014_remove_sale_only_one_active_sale_per_product_and_more'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
