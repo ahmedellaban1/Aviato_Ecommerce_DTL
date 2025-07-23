@@ -47,17 +47,21 @@ def home_page_view(request):
     return render(request, 'index.html', context)
 
 
+# View to retrieve and display all products in the shop
 def shop_products_view(request, *args, **kwargs):
+    # Prefetch only main product images (type: image) to reduce DB hits
     product_media_qs = ProductMedia.objects.only(
         'id', 'product_id' ,'file_url','alt_text'
     ).filter(is_main=True, media_type='image')
 
+    # Retrieve products with limited fields and prefetch related media
     products_queryset = Product.objects.only(
         'id', 'title', 'price', 'description'
-    ).prefetch_related(
+    ).prefetch_related( # depend on media queryset get product images
         Prefetch('productmedia_set', queryset=product_media_qs)
     ).order_by('-created_at')
 
+    # Apply pagination for performance and UI usability
     paginator = Paginator(products_queryset, 9)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
