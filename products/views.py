@@ -34,17 +34,16 @@ def home_page_view(request):
         last_sale_product = Product.objects.prefetch_related(
             Prefetch('productmedia_set', queryset=product_media_qs)
         ).get(pk=last_sale.product.pk)
-        sale_media = last_sale_product.productmedia_set.all().first(), 
+        sale_media = last_sale_product.productmedia_set.get(is_main=True),
     else:
         sale_media = None
 
     context = {
         'products': queryset,
         'sale': last_sale_product,
-        'sale_media': sale_media, 
+        'sale_media': sale_media[0],
         "page_title": 'Home',
     }
-    print(product_media_qs.all())
     return render(request, 'index.html', context)
 
 
