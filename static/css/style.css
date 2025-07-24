@@ -2338,3 +2338,12 @@ input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, inp
   color: #555;
 }
 /*# sourceMappingURL=style.css.map */
+
+/* single product colors */
+.single-product-color {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    margin-right: 5px;
+
+}

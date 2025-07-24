@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from products.models import Sale, Product, ProductMedia, ProductColor, ProductSize
+from products.models import Sale, Product, ProductMedia, ProductColor, ProductSize, Color, Size
 from django.utils import timezone
 from django.db.models import Prefetch
 from django.core.paginator import Paginator
@@ -34,31 +34,34 @@ def home_page_view(request):
         last_sale_product = Product.objects.prefetch_related(
             Prefetch('productmedia_set', queryset=product_media_qs)
         ).get(pk=last_sale.product.pk)
-        sale_media = last_sale_product.productmedia_set.all().first(), 
+        sale_media = last_sale_product.productmedia_set.get(is_main=True),
     else:
         sale_media = None
 
     context = {
         'products': queryset,
         'sale': last_sale_product,
-        'sale_media': sale_media, 
+        'sale_media': sale_media[0],
         "page_title": 'Home',
     }
-    print(product_media_qs.all())
     return render(request, 'index.html', context)
 
 
+# View to retrieve and display all products in the shop
 def shop_products_view(request, *args, **kwargs):
+    # Prefetch only main product images (type: image) to reduce DB hits
     product_media_qs = ProductMedia.objects.only(
         'id', 'product_id' ,'file_url','alt_text'
     ).filter(is_main=True, media_type='image')
 
+    # Retrieve products with limited fields and prefetch related media
     products_queryset = Product.objects.only(
         'id', 'title', 'price', 'description'
-    ).prefetch_related(
+    ).prefetch_related( # depend on media queryset get product images
         Prefetch('productmedia_set', queryset=product_media_qs)
     ).order_by('-created_at')
 
+    # Apply pagination for performance and UI usability
     paginator = Paginator(products_queryset, 9)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -70,18 +73,27 @@ def shop_products_view(request, *args, **kwargs):
     return render(request, 'shop.html', context)
 
 
+# View to retrieve and display specific product in the shop
 def product_details_view(requst, *arg, **kwargs):
+    # try to retrieve product object or rise 404 ERROR
     product = get_object_or_404(Product, pk=kwargs['pk'])
 
+    # try to retrieve product media objects with filter to avoid errors if not exists
     product_media_set = ProductMedia.objects.only(
         'id', 'file_url', 'alt_text'
     ).filter(product=product)
 
-    # TODO: get color and size 
+    # Colors directly from Color model (linked via ProductColor)
+    product_colors = Color.objects.filter(productcolor__product=product)
+
+    # Sizes directly from Size model (linked via ProductSize)
+    product_sizes = Size.objects.filter(productsize__product=product)
 
     context = {
         'product': product,
         'images': product_media_set, 
-        'page_title': f'ditails of product {product.id}'
+        'page_title': f'ditails of product {product.id}',
+        'product_colors':product_colors,
+        'product_sizes':product_sizes,
     }
     return render(requst, 'product_details.html', context)

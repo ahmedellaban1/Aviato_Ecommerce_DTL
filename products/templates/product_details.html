@@ -67,25 +67,19 @@
                         </p>
                         <div class="color-swatches">
                             <span>color:</span>
+                            <!-- TODO: create table to make this color -->
                             <ul>
-                                <li>
-                                    <a href="#!" class="swatch-violet"></a>
-                                </li>
-                                <li>
-                                    <a href="#!" class="swatch-black"></a>
-                                </li>
-                                <li>
-                                    <a href="#!" class="swatch-cream"></a>
-                                </li>
+                                {% for color in product_colors %}
+                                    <li class="single-product-color" style="background-color:{{color.color_code}}"></li>
+                                {% endfor %}
                             </ul>
                         </div>
                         <div class="product-size">
                             <span>Size:</span>
                             <select class="form-control">
-                                <option>S</option>
-                                <option>M</option>
-                                <option>L</option>
-                                <option>XL</option>
+                                {% for size in product_sizes%}
+                                    <option>{{size.name}}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="product-quantity">

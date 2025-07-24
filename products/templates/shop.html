@@ -52,7 +52,7 @@
 									</div>
 								</div>
 								<div class="product-content">
-									<h4><a href="product-single.html">{{ product.title }}</a></h4>
+									<h4><a href="{% url 'products-main-url:product-details-url' pk=product.id %}">{{ product.title }}</a></h4>
 									<p class="price">${{ product.price }}</p>
 								</div>
 							</div>
