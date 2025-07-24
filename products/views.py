@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from products.models import Sale, Product, ProductMedia, ProductColor, ProductSize, Color, Size
+from accounts.models import Profile
+from products.models import Sale, Product, ProductMedia, Color, Size, Category, Review
 from django.utils import timezone
 from django.db.models import Prefetch
 from django.core.paginator import Paginator
@@ -89,11 +90,23 @@ def product_details_view(requst, *arg, **kwargs):
     # Sizes directly from Size model (linked via ProductSize)
     product_sizes = Size.objects.filter(productsize__product=product)
 
+    # Categories directly from Category model (linked via ProductCategory)
+    product_categories = Category.objects.filter(productcategory__product=product)
+
+    # Reviews directly from Review model
+    product_reviews = Review.objects.select_related('user', 'user__profile').only(
+        'id', 'comment', 'created_at',
+        'user__first_name', 'user__last_name', 'user__username',
+        'user__profile__image'
+    ).filter(product=product)
+
     context = {
         'product': product,
-        'images': product_media_set, 
+        'images': product_media_set,
         'page_title': f'ditails of product {product.id}',
-        'product_colors':product_colors,
-        'product_sizes':product_sizes,
+        'product_colors': product_colors,
+        'product_sizes': product_sizes,
+        'product_categories': product_categories,
+        'product_reviews':product_reviews,
     }
     return render(requst, 'product_details.html', context)
