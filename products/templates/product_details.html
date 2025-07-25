@@ -14,8 +14,17 @@
                 </div>
                 <div class="col-md-6">
                     <ol class="product-pagination text-right">
-                        <li><a href="blog-left-sidebar.html"><i class="tf-ion-ios-arrow-left"></i> Next </a></li>
-                        <li><a href="blog-left-sidebar.html">Preview <i class="tf-ion-ios-arrow-right"></i></a></li>
+                        {% if next_product %}
+                            <li><a href="{% url 'products-main-url:product-details-url' pk=next_product.id %}"><i class="tf-ion-ios-arrow-left"></i> Next </a></li>
+                        {% else %}
+                            <li><a href="#" aria-disabled="true"><i class="tf-ion-ios-arrow-left"></i> No Next </a></li>
+                        {% endif %}
+                        {% if previous_product %}
+                            <li><a href="{% url 'products-main-url:product-details-url' pk=previous_product.id %}">Previous <i class="tf-ion-ios-arrow-right"></i></a></li>
+                        {% else %}
+                            <li><a href="#">No Previous <i class="tf-ion-ios-arrow-right"></i></a></li>
+                        {% endif %}
+
                     </ol>
                 </div>
             </div>
@@ -105,7 +114,7 @@
                     <div class="tabCommon mt-20">
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#details" aria-expanded="true">Details</a></li>
-                            <li class=""><a data-toggle="tab" href="#reviews" aria-expanded="false">Reviews (3)</a></li>
+                            <li class=""><a data-toggle="tab" href="#reviews" aria-expanded="false">Reviews ({{product_reviews.count}})</a></li>
                         </ul>
                         <div class="tab-content patternbg">
                             <div id="details" class="tab-pane fade active in">

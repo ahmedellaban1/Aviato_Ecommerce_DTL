@@ -78,6 +78,8 @@ def shop_products_view(request, *args, **kwargs):
 def product_details_view(requst, *arg, **kwargs):
     # try to retrieve product object or rise 404 ERROR
     product = get_object_or_404(Product, pk=kwargs['pk'])
+    next_product = Product.objects.only('id').filter(id__gt=product.id).order_by('id').first()
+    previous_product = Product.objects.only('id').filter(id__lt=product.id).order_by('id').last()
 
     # try to retrieve product media objects with filter to avoid errors if not exists
     product_media_set = ProductMedia.objects.only(
@@ -108,5 +110,7 @@ def product_details_view(requst, *arg, **kwargs):
         'product_sizes': product_sizes,
         'product_categories': product_categories,
         'product_reviews':product_reviews,
+        'next_product': next_product,
+        'previous_product': previous_product,
     }
     return render(requst, 'product_details.html', context)
