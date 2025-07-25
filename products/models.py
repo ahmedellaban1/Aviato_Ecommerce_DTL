@@ -143,6 +143,15 @@ class CategoryMedia(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['category'],
+                condition=Q(is_main=True),
+                name='unique_main_image_per_category'
+            )
+        ]
+
     def __str__(self):
         return str(self.file_url)
 

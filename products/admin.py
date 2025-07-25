@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import(
     Product, Size, Color, ProductColor, ProductSize, ProductMedia,
-    Category, Tag, CategoryTag, ProductCategory, Sale, Review, FavoriteProduct
+    Category, Tag, CategoryTag, ProductCategory, Sale, Review, FavoriteProduct, CategoryMedia
 )
 
 
@@ -37,6 +37,13 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description', 'slug')
 
 
+# Admin configuration for the ProductMedia model
+class CategoryMediaAdmin(admin.ModelAdmin):
+    list_display = ('media_type', 'alt_text', 'is_main')
+    search_fields = ('media_type', 'alt_text')
+    list_filter = ('is_main',)
+
+
 # Admin configuration for the Tag model
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -65,6 +72,7 @@ admin.site.register(ProductMedia, ProductMediaAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(CategoryTag)
+admin.site.register(CategoryMedia, CategoryMediaAdmin)
 admin.site.register(ProductCategory)
 admin.site.register(Sale, SaleAdmin)
 admin.site.register(Review, ReviewAdmin)
