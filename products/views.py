@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from products.models import Sale, Product, ProductMedia, ProductColor, ProductSize, Color, Size
+from accounts.models import Profile
+from products.models import Sale, Product, ProductMedia, Color, Size, Category, Review
 from django.utils import timezone
 from django.db.models import Prefetch
 from django.core.paginator import Paginator
@@ -77,6 +78,8 @@ def shop_products_view(request, *args, **kwargs):
 def product_details_view(requst, *arg, **kwargs):
     # try to retrieve product object or rise 404 ERROR
     product = get_object_or_404(Product, pk=kwargs['pk'])
+    next_product = Product.objects.only('id').filter(id__gt=product.id).order_by('id').first()
+    previous_product = Product.objects.only('id').filter(id__lt=product.id).order_by('id').last()
 
     # try to retrieve product media objects with filter to avoid errors if not exists
     product_media_set = ProductMedia.objects.only(
@@ -89,11 +92,25 @@ def product_details_view(requst, *arg, **kwargs):
     # Sizes directly from Size model (linked via ProductSize)
     product_sizes = Size.objects.filter(productsize__product=product)
 
+    # Categories directly from Category model (linked via ProductCategory)
+    product_categories = Category.objects.filter(productcategory__product=product)
+
+    # Reviews directly from Review model
+    product_reviews = Review.objects.select_related('user', 'user__profile').only(
+        'id', 'comment', 'created_at',
+        'user__first_name', 'user__last_name', 'user__username',
+        'user__profile__image'
+    ).filter(product=product)
+
     context = {
         'product': product,
-        'images': product_media_set, 
+        'images': product_media_set,
         'page_title': f'ditails of product {product.id}',
-        'product_colors':product_colors,
-        'product_sizes':product_sizes,
+        'product_colors': product_colors,
+        'product_sizes': product_sizes,
+        'product_categories': product_categories,
+        'product_reviews':product_reviews,
+        'next_product': next_product,
+        'previous_product': previous_product,
     }
     return render(requst, 'product_details.html', context)
