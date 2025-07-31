@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block container %}
+    <div class="container">
+        <div class="row">
+            {% for category in categories %}
+                <div class="col-md-3" style="margin-bottom: 10px;">
+                    <a
+                        href="{% url 'products-main-url:shop-products-url' %}?category={{ category.title }}"                       class="btn btn-main btn-block">
+                        {{ category.title }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+

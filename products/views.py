@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from accounts.models import Profile
 from products.models import Sale, Product, ProductMedia, Color, Size, Category, Review
 from django.utils import timezone
 from django.db.models import Prefetch
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
+from .filters import ProductFilter
 
 
 # index page 
@@ -62,8 +62,11 @@ def shop_products_view(request, *args, **kwargs):
         Prefetch('productmedia_set', queryset=product_media_qs)
     ).order_by('-created_at')
 
+    # filtered product depends on category if user pass it
+    filtered_product = ProductFilter(request.GET, queryset=products_queryset)
+
     # Apply pagination for performance and UI usability
-    paginator = Paginator(products_queryset, 9)
+    paginator = Paginator(filtered_product.qs, 9)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -114,3 +117,13 @@ def product_details_view(requst, *arg, **kwargs):
         'previous_product': previous_product,
     }
     return render(requst, 'product_details.html', context)
+
+
+# View to retrieve and display all categories
+def categories_view(request, *args):
+    categories = Category.objects.all().only('id', 'title')
+    context = {
+        "page_title": "All Categories",
+        "categories": categories,
+    }
+    return render(request, 'all_categories.html', context=context)
