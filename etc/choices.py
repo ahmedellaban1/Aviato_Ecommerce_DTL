@@ -65,9 +65,37 @@ INVOICE_STATUS = (
 )
 
 
-PAYMENT_LOG_STATUS = (
-    ('completed', 'Completed'),
-    ('failed', 'Failed'),
-    ('refunded', 'Refunded'),
-    ('gateway_timeout_ends', 'Gateway Timeout Ends'),
-)
+PAYMENT_LOG_STATUS = [
+    ('PENDING', 'Pending'),                        # Payment is not yet processed
+    ('PROCESSING', 'Processing'),                  # Payment is being processed
+    ('SUCCESS', 'Success'),                        # Payment succeeded
+    ('FAILED', 'Failed'),                          # Payment failed
+    ('CANCELLED', 'Cancelled by user or system'),  # User canceled or system auto-cancelled
+    ('EXPIRED', 'Expired'),                        # Payment link or session expired
+    ('REFUNDED', 'Refunded'),                      # Full refund issued
+    ('PARTIALLY_REFUNDED', 'Partially Refunded'),  # Partial refund issued
+    ('CHARGEBACK', 'Chargeback Requested'),        # Dispute/chargeback from user
+    ('AUTHORIZED', 'Authorized'),                  # Authorized but not captured yet
+    ('CAPTURED', 'Captured'),                      # Authorized and then captured
+    ('DECLINED', 'Declined by provider'),          # Bank or provider declined it
+    ('WAITING_3DS', 'Waiting 3DS Authentication'), # Waiting for 3D Secure check
+]
+
+
+PAYMENT_METHOD_CHOICES = [
+    ('CASH', 'Cash on Delivery'),
+    ('CARD', 'Credit/Debit Card'),
+    ('PAYPAL', 'PayPal'),
+    ('STRIPE', 'Stripe'),
+    ('BANK', 'Bank Transfer'),
+    ('VISA', 'Visa'),
+    ('MASTERCARD', 'MasterCard'),
+    ('APPLE', 'Apple Pay'),
+    ('GOOGLE', 'Google Pay'),
+    ('VODAFONE', 'Vodafone Cash'),
+    ('FAWRY', 'Fawry'),
+    ('AMAN', 'Aman'),
+    ('MEEZA', 'Meeza Card'),
+    ('CRYPTO', 'Cryptocurrency'),
+    ('OTHER', 'Other'),
+]
