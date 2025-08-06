@@ -114,9 +114,9 @@
                             </ul>
                         </div>
                         <!-- Corrected form with ID -->
-                        <form id="add-to-cart-form" action="/orderhub/add_to_card/" method="POST">
+                        <form id="add-to-cart-form" action="/orderhub/add_to_cart/" method="POST">
                             {% csrf_token %}
-                            <input type="hidden" name="product" value="{{ product.id }}">
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
                             <!-- Hidden input inside the form to capture selected color -->
                             <input type="hidden" name="color_id" id="form-color-id">
                             <!-- Hidden input inside the form to capture selected size -->

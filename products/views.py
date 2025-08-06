@@ -78,7 +78,7 @@ def shop_products_view(request, *args, **kwargs):
 
 
 # View to retrieve and display specific product in the shop
-def product_details_view(requst, *arg, **kwargs):
+def product_details_view(request, *arg, **kwargs):
     # try to retrieve product object or rise 404 ERROR
     product = get_object_or_404(Product, pk=kwargs['pk'])
     next_product = Product.objects.only('id').filter(id__gt=product.id).order_by('id').first()
@@ -116,7 +116,7 @@ def product_details_view(requst, *arg, **kwargs):
         'next_product': next_product,
         'previous_product': previous_product,
     }
-    return render(requst, 'product_details.html', context)
+    return render(request, 'product_details.html', context)
 
 
 # View to retrieve and display all categories
