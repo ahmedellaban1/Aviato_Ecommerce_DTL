@@ -2350,5 +2350,7 @@ input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, inp
 }
 
 .single-product-color.selected {
-    border-color: #000; /* or any highlight color */
+    border-color: #ffffff; /* or any highlight color */
+    box-shadow: 0 0 8px 3px #000000; /* Outer shadow */
 }
+
