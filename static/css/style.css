@@ -2339,11 +2339,16 @@ input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, inp
 }
 /*# sourceMappingURL=style.css.map */
 
-/* single product colors */
-.single-product-color {
-    display: inline-block;
-    width: 36px;
-    height: 36px;
-    margin-right: 5px;
 
+.single-product-color {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    margin: 5px;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.single-product-color.selected {
+    border-color: #000; /* or any highlight color */
 }
