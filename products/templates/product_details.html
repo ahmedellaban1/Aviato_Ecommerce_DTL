@@ -75,27 +75,35 @@
                             {{product.description}}
                         </p>
                         <div class="color-swatches">
-                            <span>color:</span>
-                            <ul>
+                            <span>Color:</span>
+                            <ul id="color-options">
                                 {% for color in product_colors %}
-                                    <li class="single-product-color" style="background-color:{{color.color_code}}"></li>
+                                    <li 
+                                        class="single-product-color" 
+                                        style="background-color: {{ color.color_code }};" 
+                                        data-color-id="{{ color.id }}"
+                                        title="{{ color.name }}">
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </div>
+
                         <div class="product-size">
                             <span>Size:</span>
-                            <select class="form-control">
-                                {% for size in product_sizes%}
-                                    <option>{{size.name}}</option>
+                            <select class="form-control" id="size-select">
+                                {% for size in product_sizes %}
+                                    <option value="{{ size.id }}">{{ size.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
+
                         <div class="product-quantity">
                             <span>Quantity:</span>
                             <div class="product-quantity-slider">
-                                <input id="product-quantity" type="text" value="0" name="product-quantity">
+                                <input id="product-quantity" type="text" value="1" name="product-quantity">
                             </div>
                         </div>
+
                         <div class="product-category">
                             <span>Categories:</span>
                             <!-- TODO: create category page -->
@@ -105,7 +113,76 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                        <a href="cart.html" class="btn btn-main mt-20">Add To Cart</a>
+                        <!-- Corrected form with ID -->
+                        <form id="add-to-cart-form" action="/orderhub/add_to_card/" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="product" value="{{ product.id }}">
+                            <!-- Hidden input inside the form to capture selected color -->
+                            <input type="hidden" name="color_id" id="form-color-id">
+                            <!-- Hidden input inside the form to capture selected size -->
+                            <input type="hidden" name="size_id" id="form-size-id">
+                            <!-- Hidden quantity field -->
+                            <input type="hidden" name="quantity" id="form-quantity" value="">
+
+                            <button class="btn btn-main mt-20" type="submit">Add to Cart</button>
+                        </form>
+                        <!-- Script -->
+                       <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const form = document.getElementById('add-to-cart-form');
+                                const quantityInput = document.getElementById('product-quantity');
+                                const hiddenQuantityInput = document.getElementById('form-quantity');
+                                const sizeSelect = document.getElementById('size-select');
+                                const hiddenSizeInput = document.getElementById('form-size-id');
+                                const colorOptions = document.querySelectorAll('.single-product-color');
+                                const hiddenColorInput = document.getElementById('form-color-id');
+
+                                let selectedColorId = null;
+
+                                // Color selection logic
+                                colorOptions.forEach(function (colorOption) {
+                                    colorOption.addEventListener('click', function () {
+                                        // Remove "selected" class from all colors
+                                        colorOptions.forEach(function (el) {
+                                            el.classList.remove('selected');
+                                        });
+
+                                        // Add "selected" class to the clicked one
+                                        colorOption.classList.add('selected');
+
+                                        // Store the selected color ID
+                                        selectedColorId = colorOption.getAttribute('data-color-id');
+                                        hiddenColorInput.value = selectedColorId;
+                                    });
+                                });
+
+                                form.addEventListener('submit', function (event) {
+                                    const quantity = quantityInput.value.trim();
+                                    const selectedSizeId = sizeSelect.value;
+
+                                    // Validate quantity
+                                    if (!quantity || isNaN(quantity) || parseInt(quantity) <= 0) {
+                                        event.preventDefault();
+                                        alert('Please enter a valid quantity.');
+                                        return;
+                                    }
+
+                                    // Validate color selection
+                                    if (!selectedColorId) {
+                                        event.preventDefault();
+                                        alert('Please select a color.');
+                                        return;
+                                    }
+
+                                    // Assign values to hidden inputs
+                                    hiddenQuantityInput.value = quantity;
+                                    hiddenSizeInput.value = selectedSizeId;
+                                    // hiddenColorInput is already updated on click
+                                });
+                            });
+                        </script>
+
+
                     </div>
                 </div>
             </div>
