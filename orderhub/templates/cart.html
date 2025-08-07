@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block container %}
+    {% if messages %}
+        <div class="alert-wrapper">
+            <div id="messageAlert" class="container ">
+                <div class="alertPart mt-50">
+                    {% for message in messages %}
+                        {% if 'success' in message.tags %}
+                            <div class="alert alert-success alert-common alert-dismissible " role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <i class="tf-ion-thumbsup"></i><span>Success! </span>{{message}}
+                            </div>
+                        {% elif 'error' in message.tags %}
+                            <div class="alert alert-danger alert-common alert-dismissible " role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <i class="tf-ion-thumbsup"></i><span>Warning! </span>{{message}}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <script>
+        // Run after page load
+        window.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                const alert = document.getElementById('messageAlert');
+                if (alert) {
+                    alert.style.transition = 'opacity 1s ease';
+                    alert.style.opacity = '0';
+                    setTimeout(function () {
+                        alert.remove();
+                    }, 3000); // Wait for fade-out before removing
+                }
+            }, 2000); // 2 seconds
+        });
+    </script>
+
+
+    <section class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="content">
+                        <h1 class="page-name">Cart</h1>
+                        <ol class="breadcrumb">
+                            <li><a href="index.html">Home</a></li>
+                            <li class="active">cart</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <div class="page-wrapper">
+    <div class="cart shopping">
+        <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+            <div class="block">
+                <div class="product-list">
+                <form method="post">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th class="">Item Name</th>
+                        <th class="">Item Price</th>
+                        <th class="">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr class="">
+                        <td class="">
+                            <div class="product-info">
+                            {% for media in order.productmedia_set.all %}
+                            <img width="80" src="{{media.file_url.url}}" alt="" />
+                            {% endfor %}
+                            <a href="#!">{{order.title}}</a>
+                            </div>
+                        </td>
+                        <td class="">${{order.price}}</td>
+                        <td class="">
+                            <a class="product-remove" href="#!">Remove</a>
+                        </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                    <a href="checkout.html" class="btn btn-main pull-right">Checkout</a>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}
