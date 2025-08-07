@@ -3,7 +3,8 @@
 
 {% block container %}
     {% if messages %}
-    <div id="messageAlert" class="container">
+    <div class="alert-wrapper">
+    <div id="messageAlert" class="container ">
         <div class="alertPart mt-50">
             <div class="alert alert-success alert-common alert-dismissible " role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -12,6 +13,7 @@
                 {% endfor %}
             </div>
         </div>
+    </div>
     </div>
     {% endif %}
     <script>

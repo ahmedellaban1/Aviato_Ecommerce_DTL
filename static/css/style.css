@@ -2356,3 +2356,17 @@ input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, inp
 .custom-alert {
     transition: opacity 0.5s ease-in-out;
 }
+.alert-wrapper {
+        position: fixed;
+        top: 150px;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        pointer-events: none; /* So it doesn't block clicks below */
+    }
+
+    #messageAlert {
+        pointer-events: all; /* Re-enable click for buttons inside */
+    }
