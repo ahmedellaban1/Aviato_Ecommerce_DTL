@@ -58,11 +58,12 @@ def add_to_cart_view(request, *args, **kwargs):
         invoice.updated_at = timezone.now()
         invoice.save()
         
+        # alert if product successfully added to the cart
         messages.success(request,"Item added to cart successfully!")
-
         # Redirect to avoid re-submission (PRG)
         return redirect('products-main-url:product-details-url', pk=product.id)  # replace with your cart or success page URL name
-        # return redirect(f"{reverse('products-main-url:product-details-url', kwargs={'pk': product.id})}?showAlert=true")
 
 
-    return render(request, 'cart.html')
+    messages.error(request,"something went wrong")
+    # Redirect to avoid re-submission (PRG)
+    return redirect('products-main-url:product-details-url', pk=product.id)  # replace with your cart or success page URL name
