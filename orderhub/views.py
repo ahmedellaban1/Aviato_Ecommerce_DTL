@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from etc.choices import INVOICE_STATUS
 from decimal import Decimal
+from django.contrib import messages
 
 
 def products_cart_view(request, *args, **kwargs):
@@ -56,12 +57,12 @@ def add_to_cart_view(request, *args, **kwargs):
         invoice.shipping_fee = invoice.total_price * Decimal(0.1)
         invoice.updated_at = timezone.now()
         invoice.save()
+        
+        messages.success(request,"Item added to cart successfully!")
 
         # Redirect to avoid re-submission (PRG)
         return redirect('products-main-url:product-details-url', pk=product.id)  # replace with your cart or success page URL name
+        # return redirect(f"{reverse('products-main-url:product-details-url', kwargs={'pk': product.id})}?showAlert=true")
 
-    # On GET
-    context = {
-        'page_title': 'Cart',
-    }
-    return render(request, 'cart.html', context)
+
+    return render(request, 'cart.html')
