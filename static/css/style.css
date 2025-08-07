@@ -2353,4 +2353,6 @@ input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, inp
     border-color: #ffffff; /* or any highlight color */
     box-shadow: 0 0 8px 3px #000000; /* Outer shadow */
 }
-
+.custom-alert {
+    transition: opacity 0.5s ease-in-out;
+}
