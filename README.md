@@ -34,7 +34,7 @@ This is a full-featured e-commerce web application built with **Django**, based 
 ### For Linux/macOS users:
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/aviato-ecommerce.git
+git clone https://github.com/ahmedellaban1/Aviato_Ecommerce_DTL.git
 cd aviato-ecommerce
 
 # Create virtual environment & activate it
@@ -54,7 +54,7 @@ python manage.py runserver
 
 ```bash
 # Clone the repo
-git clone https://github.com/your-username/aviato-ecommerce.git
+git clone https://github.com/ahmedellaban1/Aviato_Ecommerce_DTL.git
 cd aviato-ecommerce
 
 # Create virtual environment & activate it
