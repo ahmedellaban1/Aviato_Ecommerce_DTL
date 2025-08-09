@@ -2341,32 +2341,59 @@ input[type=email]:focus, input[type=password]:focus, input[type=text]:focus, inp
 
 
 .single-product-color {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    margin: 5px;
-    border: 2px solid transparent;
-    cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  margin: 5px;
+  border: 2px solid transparent;
+  cursor: pointer;
 }
 
 .single-product-color.selected {
-    border-color: #ffffff; /* or any highlight color */
-    box-shadow: 0 0 8px 3px #000000; /* Outer shadow */
+  border-color: #ffffff; /* or any highlight color */
+  box-shadow: 0 0 8px 3px #000000; /* Outer shadow */
 }
 .custom-alert {
-    transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
 .alert-wrapper {
-        position: fixed;
-        top: 150px;
-        left: 0;
-        width: 100%;
-        z-index: 9999;
-        display: flex;
-        justify-content: center;
-        pointer-events: none; /* So it doesn't block clicks below */
-    }
+  position: fixed;
+  top: 150px;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* So it doesn't block clicks below */
+}
 
-    #messageAlert {
-        pointer-events: all; /* Re-enable click for buttons inside */
-    }
+#messageAlert {
+  pointer-events: all; /* Re-enable click for buttons inside */
+}
+
+#confirm-remove-popup {
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid #ccc;
+  padding: 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+#popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.product-remove {
+  cursor: pointer;
+}
