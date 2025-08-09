@@ -149,7 +149,7 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                        <!-- Corrected form with ID -->
+                        <!-- add to cart form -->
                         <form id="add-to-cart-form" action="/orderhub/add_to_cart/" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="product_id" value="{{ product.id }}">
