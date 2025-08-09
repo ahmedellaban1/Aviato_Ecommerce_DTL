@@ -42,7 +42,7 @@ def home_page_view(request):
     context = {
         'products': queryset,
         'sale': last_sale_product,
-        'sale_media': sale_media[0],
+        'sale_media': sale_media[0] or None,
         "page_title": 'Home',
     }
     return render(request, 'index.html', context)
