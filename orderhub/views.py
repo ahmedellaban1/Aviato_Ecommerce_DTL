@@ -27,6 +27,19 @@ def products_cart_view(request):
     product_qs = Product.objects.prefetch_related(
         Prefetch('productmedia_set', product_media_qs)
     ).filter(id__in=product_ids)
+    if request.method=='POST':
+        order_id = {order.product.product.id: order.id for order in orders if order.product.product.id==int(request.POST['order_item_id'])}
+        try:
+            order = get_object_or_404(OrderItem, id=order_id[int(request.POST['order_item_id'])])
+            get_object_or_404(ProductVariant, id=order.product.id).delete()
+            order.delete()
+            messages.success(request,"Item removed from cart successfully!")
+            # Redirect to avoid re-submission (PRG)
+            return redirect('orderhub-main-url:products-cart-url')
+        except:
+            messages.error(request,"something went wrong please contact to support if you face any problem")
+            # Redirect to avoid re-submission (PRG)
+            return redirect('orderhub-main-url:products-cart-url')
     context = {
         'page_title': "Your cart",
         'orders': product_qs,
@@ -79,9 +92,9 @@ def add_to_cart_view(request, *args, **kwargs):
         # alert if product successfully added to the cart
         messages.success(request,"Item added to cart successfully!")
         # Redirect to avoid re-submission (PRG)
-        return redirect('products-main-url:product-details-url', pk=product.id)  # replace with your cart or success page URL name
+        return redirect('products-main-url:product-details-url', pk=product.id)
 
 
     messages.error(request,"something went wrong")
     # Redirect to avoid re-submission (PRG)
-    return redirect('products-main-url:product-details-url', pk=product.id)  # replace with your cart or success page URL name
+    return redirect('products-main-url:product-details-url', pk=product.id)

@@ -87,7 +87,7 @@
                         </td>
                         <td class="">${{order.price}}</td>
                         <td class="">
-                            <a class="product-remove" href="#!">Remove</a>
+                            <span class="product-remove" data-order_item_id="{{ order.id }}">Remove</span>
                         </td>
                         </tr>
                         {% endfor %}
@@ -102,5 +102,43 @@
         </div>
     </div>
     </div>
+
+    <!-- Overlay -->
+    <div id="popup-overlay"></div>
+
+    <!-- Confirmation popup -->
+    <div id="confirm-remove-popup">
+    <p>Are you sure you want to remove this item from your cart?</p>
+
+    <!-- Hidden form inside popup -->
+    <form id="remove-form" method="post" action="{% url 'orderhub-main-url:products-cart-url' %}">
+        {% csrf_token %}
+        <input type="hidden" name="order_item_id" id="order-item-id-field">
+        <button  class="btn btn-small btn-solid-border" type="submit">Yes, remove</button>
+        <button  class="btn btn-small btn-solid-border" type="button" id="cancel-remove-btn">Cancel</button>
+    </form>
+    </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let selectedOrderItemId = null;
+
+      document.querySelectorAll('.product-remove').forEach(function (el) {
+        el.addEventListener('click', function () {
+          selectedOrderItemId = this.getAttribute('data-order_item_id');
+          document.getElementById('order-item-id-field').value = selectedOrderItemId;
+          document.getElementById('confirm-remove-popup').style.display = 'block';
+          document.getElementById('popup-overlay').style.display = 'block';
+        });
+      });
+
+      document.getElementById('cancel-remove-btn').addEventListener('click', function () {
+        document.getElementById('confirm-remove-popup').style.display = 'none';
+        document.getElementById('popup-overlay').style.display = 'none';
+        selectedOrderItemId = null;
+      });
+    });
+  </script>
+
 
 {% endblock %}
