@@ -20,14 +20,14 @@
       <p>Please login to see this page.</p>
     {% endif %}
   {% endif %}
-
+  <h2 class="text-center">Welcome Back</h2>
   <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     {% bootstrap_form form %}
     <input class="btn btn-main text-center w-100" type="submit" value="login">
     <input type="hidden" name="next" value="{% url 'products-main-url:home-page-url' %}">
   </form>
-
+  <p class="mt-20">New in this site ?<a href="signin.html"> Create New Account</a></p>
   {# Assumes you setup the password_reset view in your URLconf #}
  <!-- <p><a href="{# % url 'password_reset' % #}">Lost password?</a></p> -->
 
