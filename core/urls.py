@@ -7,6 +7,8 @@ import debug_toolbar
 
 
 urlpatterns = [
+    path('accounts/', include('django.contrib.auth.urls'),),
+    # path('accounts/', include('accounts.urls'), name="accounts-customized-url"),
     path('admin/', admin.site.urls),
     path('summernote/', include('django_summernote.urls')),
     path('', include('products.urls', namespace='products-main-url')),
