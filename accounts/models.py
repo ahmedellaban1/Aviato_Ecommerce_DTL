@@ -28,7 +28,7 @@ class Profile(models.Model):
     @receiver(post_save, sender=CustomUser)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
-            Profile.objects.create(user=instance)
+            Profile.objects.create(user=instance,date_of_birth='2000-01-01')
 
     def __str__(self):
         return f"{self.user.username}'s profile"
