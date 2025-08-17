@@ -1,6 +1,8 @@
 import os
 from datetime import date
 from random import randint
+import secrets
+
 
 
 def file_rename(file_name, number_of_digits):
@@ -27,3 +29,6 @@ def category_media_uploader(instance, filename):
     file_name, file_date = file_rename(filename, 10)
     return f"Category/{instance.media_type.title()}/{file_date}/{instance.category.id}-{file_name}"
 
+
+def OTP_random_digits():
+    return str(secrets.randbelow(10**6)).zfill(6)
