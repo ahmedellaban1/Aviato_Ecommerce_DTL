@@ -5,11 +5,20 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from etc.choices import USER_TYPE_CHOICES, GENDER_CHOICES
 from etc.helper_functions import profile_image_uploader
-# Create your models here.
+from django.utils import timezone
+from django.contrib.auth.hashers import make_password
+from datetime import timedelta  
+
+
 class CustomUser(AbstractUser):
     type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.is_active = False
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.username
@@ -46,3 +55,26 @@ class Address(models.Model):
 
     def __str__(self):
         return f"{self.user}-{self.address}"
+    
+
+class OTP(models.Model):
+    user = models.ForeignKey(CustomUser, related_name="user_otp", null=False, blank=False, on_delete=models.CASCADE)
+    otp_code = models.CharField(max_length=6, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    updated_at = models.DateTimeField(auto_now=True)
+    is_used = models.BooleanField(default=False)
+    attempts_count = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        # Only generate OTP if this is a new object (no pk yet)
+        if not self.pk:
+            self.otp_code = make_password(self.otp_code)
+            self.expires_at = timezone.now() + timedelta(minutes=5)
+            super().save(*args, **kwargs)
+            return None
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user} - {self.is_used}"
+    

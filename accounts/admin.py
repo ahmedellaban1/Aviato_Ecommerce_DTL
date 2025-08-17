@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Profile, Address
+from .models import CustomUser, Profile, Address, OTP
 # Register your models here.
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('username', 'type', 'email', 'is_superuser', 'is_staff', 'is_active')
@@ -19,3 +19,4 @@ class AddressAdmin(admin.ModelAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Address, AddressAdmin)
+admin.site.register(OTP)
