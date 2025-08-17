@@ -1,9 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from products.models import Sale, Product, ProductMedia, Color, Size, Category, Review
 from django.utils import timezone
 from django.db.models import Prefetch
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404
 from .filters import ProductFilter
 
 
