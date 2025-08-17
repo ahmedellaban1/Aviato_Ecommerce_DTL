@@ -1,8 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Invoice, OrderItem, PaymentLog, ProductVariant
 from products.models import ProductMedia, ProductColor, ProductSize, Product
-from django.shortcuts import get_object_or_404
-from django.shortcuts import redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from etc.choices import INVOICE_STATUS
