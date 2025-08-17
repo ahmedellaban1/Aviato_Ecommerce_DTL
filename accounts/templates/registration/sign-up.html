@@ -1,0 +1,25 @@
+{% extends "base_register.html" %}
+{% load bootstrap4 %}
+
+{% block container %}
+
+  {% if user.is_authenticated %}
+      <script>
+          window.location.href = "{% url 'products-main-url:home-page-url' %}";
+      </script>
+  {% endif %}
+
+  <h2 class="text-center">Welcome aboard! Let's get you signed up and started.</h2>
+  <form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% for field in form %}
+      {% for error in field.errors %}
+        <p class="text-danger">{{ error }}</p>
+      {% endfor %}
+    {% endfor %}
+    <input class="btn btn-main text-center w-100" type="submit" value="Sign Up">
+  </form>
+
+
+{% endblock %}
