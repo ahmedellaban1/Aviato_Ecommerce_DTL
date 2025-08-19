@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import CreateUserForm
+from .forms import CreateUserForm, UpdateProfileForm
 from etc.choices import USER_TYPE_CHOICES
 from .models import OTP, CustomUser, Profile
 from etc.helper_functions import OTP_random_digits
@@ -109,7 +109,7 @@ def profile_details_view(request):
     profile = (
         Profile.objects
         .select_related("user")
-        .only("id", "user__first_name", "user__last_name", "user__email", "country", "image", "country", "phone", "date_of_birth")
+        .only("id", "user__first_name", "user__last_name", "user__email", "country", "image", "country", "phone", "date_of_birth", "gender")
         .defer("user__password")
         .get(user=request.user)
     )
@@ -120,6 +120,18 @@ def profile_details_view(request):
     return render(request, 'profile_details.html', context)
 
 
-# @login_required
-# def update_profile_view(request):
-#     return render(request, )
+@login_required
+def update_profile_view(request):
+    profile = get_object_or_404(Profile, user=request.user)
+    if request.method == "POST":
+        form = UpdateProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts-customized-url:profile-details-url')
+    else:
+        form = UpdateProfileForm(instance=profile)
+    context = {
+        "page_title": "Update my profile",
+        "form": form
+    }
+    return render(request, 'update_profile.html', context)
