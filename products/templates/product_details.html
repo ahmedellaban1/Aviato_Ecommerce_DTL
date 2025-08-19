@@ -142,10 +142,9 @@
 
                         <div class="product-category">
                             <span>Categories:</span>
-                            <!-- TODO: create category page -->
                             <ul style="display: inline;">
                                 {% for category in product_categories %}
-                                    <li><a href="#">{{category.title}}</a></li>
+                                    <li><a href="{% url 'products-main-url:shop-products-url' %}?category={{category.title}}">{{category.title}}</a></li>
                                 {% endfor %}
                             </ul>
                         </div>
