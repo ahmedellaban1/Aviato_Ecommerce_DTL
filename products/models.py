@@ -101,7 +101,7 @@ class FavoriteProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-
+            
     class Meta:
         constraints = [
             # Ensure a user can only favorite a product once
