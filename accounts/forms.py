@@ -1,6 +1,6 @@
 from django import forms
 from .models import CustomUser, Profile
-
+from etc.validators import validate_password_strength
 
 class CreateUserForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput)
@@ -12,6 +12,11 @@ class CreateUserForm(forms.ModelForm):
         widgets = {
             'password': forms.PasswordInput(),
         }
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        validate_password_strength(password)
+        return password
 
     def clean(self):
         cleaned_data = super().clean()
@@ -28,4 +33,3 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['address', 'image', 'country', 'phone', 'date_of_birth', 'gender']
-        exclude = ['user',]
