@@ -18,36 +18,40 @@
 	</div>
 </section>
 <section class="user-dashboard page-wrapper">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <ul class="list-inline dashboard-menu text-center">
-          <li><a href="dashboard.html">Dashboard</a></li>
-          <li><a href="order.html">Orders</a></li>
-          <li><a href="address.html">Address</a></li>
-          <li><a class="active"  href="">Profile Details</a></li>
-        </ul>
-        <div class="dashboard-wrapper dashboard-user-profile">
-          <div class="media">
-            <div class="pull-left text-center" href="#!">
-              <img class="media-object user-img" src="{{profile.image.url}}" alt="Image">
-              <a href="{% url 'accounts-customized-url:update-profile-url' %}" class="btn btn-transparent mt-20">Update Profile</a>
-            </div>
-            <div class="media-body">
-              <ul class="user-profile-list">
-                <li><span>Full Name:</span>{{profile.user.first_name}} {{profile.user.last_name}}</li>
-                <li><span>Country:</span>{{profile.country_name}}</li>
-                <li><span>Email:</span>{{profile.user.email}}</li>
-                <li><span>Phone:</span>{{profile.phone}}</li>
-                <li><span>Date of Birth:</span>{{profile.date_of_birth}}</li>
-                <li><span>Gneder:</span>{{profile.gender.title}}</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="container">
+		<div class="row">
+		<div class="col-md-12">
+			<ul class="list-inline dashboard-menu text-center">
+			<li><a href="dashboard.html">Dashboard</a></li>
+			<li><a href="order.html">Orders</a></li>
+			<li><a href="address.html">Address</a></li>
+			<li><a class="active"  href="">Profile Details</a></li>
+			</ul>
+			<div class="dashboard-wrapper dashboard-user-profile">
+			<div class="media">
+				<div class="pull-left text-center" href="#!">
+				{% if profile.image  %}
+					<img class="media-object user-img" src="{{profile.image.url}}" alt="Image">
+				{% else %}
+					<img class="media-object user-img" src="{% static 'images/profile-icon.jpg'%}" alt="Default Image">
+				{% endif %}
+				<a href="{% url 'accounts-customized-url:update-profile-url' %}" class="btn btn-main mt-20">Update Profile</a>
+				</div>
+				<div class="media-body">
+				<ul class="user-profile-list">
+					<li><span>Full Name:</span>{{profile.user.first_name}} {{profile.user.last_name}}</li>
+					<li><span>Country:</span>{{profile.country_name}}</li>
+					<li><span>Email:</span>{{profile.user.email}}</li>
+					<li><span>Phone:</span>{{profile.phone}}</li>
+					<li><span>Date of Birth:</span>{{profile.date_of_birth}}</li>
+					<li><span>Gneder:</span>{{profile.gender.title}}</li>
+				</ul>
+				</div>
+			</div>
+			</div>
+		</div>
+		</div>
+	</div>
 </section>
 
 {% endblock %}
