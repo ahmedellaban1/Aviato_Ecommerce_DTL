@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import CreateUserForm, UpdateProfileForm
-from etc.choices import USER_TYPE_CHOICES
-from .models import OTP, CustomUser, Profile
-from etc.helper_functions import OTP_random_digits
-from etc.gmail_messages import send_registration_otp
 from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from .forms import CreateUserForm, UpdateProfileForm
+from .models import OTP, CustomUser, Profile
+from etc.choices import USER_TYPE_CHOICES
+from etc.helper_functions import OTP_random_digits
+from etc.gmail_messages import send_registration_otp
 
 
 
