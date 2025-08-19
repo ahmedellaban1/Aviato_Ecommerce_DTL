@@ -1,6 +1,15 @@
 {% extends "base_register.html" %}
-
 {% block container %}
   <p>Logged out!</p>
   <a href="{% url 'login'%}">Click here to login again.</a>
+
+  {% if not user.is_authenticated %}
+    <script>
+      // Redirect after 3 seconds
+      setTimeout(function() {
+        window.location.href = "{% url 'products-main-url:home-page-url' %}";
+      }, 3000);
+    </script>
+  {% endif %}
+
 {% endblock %}
