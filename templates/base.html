@@ -80,6 +80,7 @@
 			</div>
 			<div class="col-md-4 col-xs-12 col-sm-4">
 				<!-- Cart -->
+				{% if request.user.is_authenticated %}
 				<ul class="top-menu text-right list-inline">
 					<li class="dropdown cart-nav dropdown-slide">
 						<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i
@@ -90,30 +91,32 @@
 								<li><a href="checkout.html" class="btn btn-small btn-solid-border">Checkout</a></li>
 							</ul>
 						</div>
-
 					</li><!-- / Cart -->
-
+				{% endif %}
+				{% if not request.user.is_authenticated %}
+					<!-- Cart -->
+					<ul class="top-menu text-right list-inline">
+						<li class="dropdown cart-nav dropdown-slide">
+							<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i
+									class=""></i>Registration</a>
+							<div class="dropdown-menu cart-dropdown">
+								<ul class="text-center cart-buttons">
+									<li><a href="/accounts/login" class="btn btn-small btn-solid-border">Sign-In</a></li>
+									<li><a href="accounts/sign-up/" class="btn btn-small btn-solid-border">Sign-Up</a></li>
+								</ul>
+							</div>
+						</li><!-- / Cart -->
+				{% endif %}
 					<!-- Search -->
 					<li class="dropdown search dropdown-slide">
 						<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"><i
 								class="tf-ion-ios-search-strong"></i> Search</a>
 						<ul class="dropdown-menu search-dropdown">
 							<li>
-								<form action="post"><input type="search" class="form-control" placeholder="Search..."></form>
+								<form action=""><input type="search" class="form-control" placeholder="Search..."></form>
 							</li>
 						</ul>
 					</li><!-- / Search -->
-
-					<!-- Languages -->
-					<li class="commonSelect">
-						<select class="form-control">
-							<option>EN</option>
-							<option>DE</option>
-							<option>FR</option>
-							<option>ES</option>
-						</select>
-					</li><!-- / Languages -->
-
 				</ul><!-- / .nav .navbar-nav .navbar-right -->
 			</div>
 		</div>
@@ -148,7 +151,7 @@
 											
 					<li class="dropdown ">
 						<a href="/admin/">Admin</a>
-					</li><!-- / Home -->
+					</li><!-- / admin -->
 
 					<!-- Elements -->
 					<li class="dropdown dropdown-slide">
@@ -166,7 +169,7 @@
 										<li><a href="{% url 'products-main-url:shop-products-url' %}">Shop</a></li>
 										<li><a href="{% url 'products-main-url:all-categories-url' %}">Categories</a></li>
 										<li><a href="checkout.html">Checkout</a></li>
-										<li><a href="cart.html">Cart</a></li>
+										<li><a href="{% url 'orderhub-main-url:products-cart-url' %}">Cart</a></li>
 										<li><a href="pricing.html">Pricing</a></li>
 										<li><a href="confirmation.html">Confirmation</a></li>
 
@@ -198,43 +201,32 @@
 							<div class="row">
 
 								<!-- Introduction -->
-								<div class="col-sm-3 col-xs-12">
+								<div class="col-sm-4 col-xs-12">
 									<ul>
 										<li class="dropdown-header">Introduction</li>
 										<li role="separator" class="divider"></li>
 										<li><a href="contact.html">Contact Us</a></li>
 										<li><a href="about.html">About Us</a></li>
-										<li><a href="404.html">404 Page</a></li>
-										<li><a href="coming-soon.html">Coming Soon</a></li>
+										<!-- TODO: the next 2 lines -->
+										<!-- <li><a href="404.html">404 Page</a></li>
+										<li><a href="coming-soon.html">Coming Soon</a></li> -->
 										<li><a href="faq.html">FAQ</a></li>
 									</ul>
 								</div>
 
 								<!-- Contact -->
-								<div class="col-sm-3 col-xs-12">
+								<div class="col-sm-4 col-xs-12">
 									<ul>
 										<li class="dropdown-header">Dashboard</li>
 										<li role="separator" class="divider"></li>
 										<li><a href="dashboard.html">User Interface</a></li>
 										<li><a href="order.html">Orders</a></li>
 										<li><a href="address.html">Address</a></li>
-										<li><a href="profile-details.html">Profile Details</a></li>
+										<li><a href="{% url 'accounts-customized-url:profile-details-url' %}">Profile Details</a></li>
 									</ul>
 								</div>
-
-								<!-- Utility -->
-								<div class="col-sm-3 col-xs-12">
-									<ul>
-										<li class="dropdown-header">Utility</li>
-										<li role="separator" class="divider"></li>
-										<li><a href="login.html">Login Page</a></li>
-										<li><a href="signin.html">Signin Page</a></li>
-										<li><a href="forget-password.html">Forget Password</a></li>
-									</ul>
-								</div>
-
 								<!-- Mega Menu -->
-								<div class="col-sm-3 col-xs-12">
+								<div class="col-sm-4 col-xs-12">
 									<a href="{% url 'products-main-url:shop-products-url' %}">
 										<img class="img-responsive" src="{% static 'images/shop/header-img.jpg' %}" alt="menu image" />
 									</a>
@@ -262,12 +254,14 @@
 					<!-- Shop -->
 					<li class="dropdown dropdown-slide">
 						<a href="#!" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="350"
-							role="button" aria-haspopup="true" aria-expanded="false">Elements <span
+							role="button" aria-haspopup="true" aria-expanded="false">More<span
 								class="tf-ion-ios-arrow-down"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="typography.html">Typography</a></li>
-							<li><a href="buttons.html">Buttons</a></li>
-							<li><a href="alerts.html">Alerts</a></li>
+							<li><a href="{% url 'accounts-customized-url:profile-details-url' %}">MY PROFILE</a></li>
+							{% if user.is_authenticated %}
+							<li><a href="">RESET PASSWORD</a></li>
+							<li><a href="{% url 'accounts-customized-url:log-out-url' %}">LOG-OUT</a></li>
+							{% endif %}
 						</ul>
 					</li><!-- / Blog -->
 				</ul><!-- / .nav .navbar-nav -->
