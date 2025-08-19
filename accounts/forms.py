@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser
+from .models import CustomUser, Profile
 
 
 class CreateUserForm(forms.ModelForm):
@@ -22,3 +22,10 @@ class CreateUserForm(forms.ModelForm):
             self.add_error('confirm_password', "Passwords do not match")
 
         return cleaned_data
+
+
+class UpdateProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['address', 'image', 'country', 'phone', 'date_of_birth', 'gender']
+        exclude = ['user',]

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block container %}
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">Dashboard</h1>
+					<ol class="breadcrumb">
+						<li><a href="{% url 'products-main-url:home-page-url' %}">Home</a></li>
+						<li class="active">update my account profile</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="user-dashboard page-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="list-inline dashboard-menu text-center">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="order.html">Orders</a></li>
+          <li><a href="address.html">Address</a></li>
+          <li><a class="active"  href="">Update Profile Details</a></li>
+        </ul>
+        <div class="dashboard-wrapper dashboard-user-profile">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                <input class="btn btn-main text-center w-100" type="submit" value="Update">
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
