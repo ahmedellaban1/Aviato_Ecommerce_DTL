@@ -2,43 +2,64 @@
 {% load static %}
 
 {% block container %}
-  {% if user.is_active %}
-    <script>
-        window.location.href = "{% url 'login' %}";
-    </script>
-  {% endif %}
+	{% if messages %}
+		<div class="alert-wrapper">
+			<div id="messageAlert" class="container ">
+				<div class="alertPart mt-50">
+					{% for message in messages %}
+						{% if 'success' in message.tags %}
+							<div class="alert alert-success alert-common alert-dismissible " role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="tf-ion-thumbsup"></i><span>Success! </span>{{message}}
+							</div>
+						{% elif 'error' in message.tags %}
+							<div class="alert alert-danger alert-common alert-dismissible " role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="tf-ion-thumbsup"></i><span>Warning! </span>{{message}}
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+    {% endif %}
+	{% if user.is_active %}
+		<script>
+			window.location.href = "{% url 'login' %}";
+		</script>
+	{% endif %}
 
-  {% if error_message %}
-    <p class="text-danger">{{ error_message }}</p>
-  {% endif %}
+	{% if error_message %}
+		<p class="text-danger">{{ error_message }}</p>
+	{% endif %}
 
-  <h2 class="text-center">You are about to start shopping</h2>
-  <h4 class="text-center">Enter the OTP you received in your mail</h4>
+	<h2 class="text-center">You are about to start shopping</h2>
+	<h4 class="text-center">Enter the OTP you received in your mail</h4>
 
-  <form method="post">
-    {% csrf_token %}
-    <br>
-    <input type="text" class="form-control" name="otp" maxlength="6" placeholder="OTP is a 6-digit number" id="otp-input" required>
-    <br>
-    <input class="btn btn-main text-center w-100" type="submit" value="Verify OTP" id="verify-btn">
-    <input type="hidden" name="next" value="{% url 'login' %}">
-  </form>
+	<form method="post">
+		{% csrf_token %}
+		<br>
+		<input type="text" class="form-control" name="otp" maxlength="6" placeholder="OTP is a 6-digit number" id="otp-input" required>
+		<br>
+		<input class="btn btn-main text-center w-100" type="submit" value="Verify OTP" id="verify-btn">
+		<input type="hidden" name="next" value="{% url 'login' %}">
+	</form>
 
-<script>
-  const otpInput = document.getElementById("otp-input");
-  const verifyBtn = document.getElementById("verify-btn");
+	<script>
+		const otpInput = document.getElementById("otp-input");
+		const verifyBtn = document.getElementById("verify-btn");
 
-  otpInput.addEventListener("input", function () {
-    // Only digits
-    this.value = this.value.replace(/[^0-9]/g, "");
+		otpInput.addEventListener("input", function () {
+			// Only digits
+			this.value = this.value.replace(/[^0-9]/g, "");
 
-    // Max length 6
-    if (this.value.length > 6) {
-      this.value = this.value.substring(0, 6);
-    }
+			// Max length 6
+			if (this.value.length > 6) {
+			this.value = this.value.substring(0, 6);
+			}
 
-    // Enable/disable button
-    verifyBtn.disabled = this.value.length !== 6;
-  });
-</script>
+			// Enable/disable button
+			verifyBtn.disabled = this.value.length !== 6;
+		});
+	</script>
 {% endblock %}
