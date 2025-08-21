@@ -41,7 +41,11 @@
 		<br>
 		<input type="text" class="form-control" name="otp" maxlength="6" placeholder="OTP is a 6-digit number" id="otp-input" required>
 		<br>
-		<input class="btn btn-main text-center w-100" type="submit" value="Verify OTP" id="verify-btn">
+		<input 
+			class="btn btn-main text-center w-100" 
+			type="submit" onclick="this.disabled=true; this.innerText='Processing...'; 
+			this.form.submit();" value="Verify OTP" id="verify-btn"
+		>
 		<input type="hidden" name="next" value="{% url 'login' %}">
 	</form>
 
