@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block container %}
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">Dashboard</h1>
+					<ol class="breadcrumb">
+						<li><a href="{% url 'products-main-url:home-page-url' %}">Home</a></li>
+						<li class="active">my account</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="user-dashboard page-wrapper">
+	<div class="container">
+		<div class="row">
+		<div class="col-md-12">
+            <ul class="list-inline dashboard-menu text-center">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="order.html">Orders</a></li>
+                <li><a class="active" href="{% url 'accounts-customized-url:client-address-url' %}">Address</a></li>
+                <li><a href="{% url 'accounts-customized-url:profile-details-url' %}">Profile Details</a></li>
+            </ul>
+			<div class="dashboard-wrapper dashboard-user-profile">
+			<div class="media">
+				<div class="text-left" href="">
+                    <h2 class="text-center">Add new Address</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <input class="btn btn-main text-center w-100" type="submit" value="New Address"  
+                            onclick="this.disabled=true; this.innerText='Processing...'; this.form.submit();"
+                        >
+                    </form>
+				</div>
+			</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}

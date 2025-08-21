@@ -1,5 +1,5 @@
 from django import forms
-from .models import CustomUser, Profile
+from .models import CustomUser, Profile, Address
 from etc.validators import validate_password_strength
 
 class CreateUserForm(forms.ModelForm):
@@ -33,3 +33,9 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['address', 'image', 'country', 'phone', 'date_of_birth', 'gender']
+
+
+class CreateUpdateAddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ['company', 'address', 'country', 'phone']

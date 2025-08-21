@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block container %}
+{% if messages %}
+		<div class="alert-wrapper">
+			<div id="messageAlert" class="container ">
+				<div class="alertPart mt-50">
+					{% for message in messages %}
+						{% if 'success' in message.tags %}
+							<div class="alert alert-success alert-common alert-dismissible " role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="tf-ion-thumbsup"></i><span>Success! </span>{{message}}
+							</div>
+						{% elif 'error' in message.tags %}
+							<div class="alert alert-danger alert-common alert-dismissible " role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="tf-ion-thumbsup"></i><span>Warning! </span>{{message}}
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+{% endif %}
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">Dashboard</h1>
+					<ol class="breadcrumb">
+						<li><a href="{% url 'products-main-url:home-page-url' %}">Home</a></li>
+						<li class="active">my account</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="user-dashboard page-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="list-inline dashboard-menu text-center">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="order.html">Orders</a></li>
+          <li><a class="active" href="">Address</a></li>
+          <li><a href="{% url 'accounts-customized-url:profile-details-url' %}">Profile Details</a></li>
+        </ul>
+        <div class="dashboard-wrapper user-dashboard">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Address</th>
+                  <th>Country</th>
+                  <th class="col-md-2 col-sm-3">Phone</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for address in addresses %}
+                    <tr>
+                    <td>{{address.company}}</td>
+                    <td>{{address.address}}</td>
+                    <td>{{address.country_name}}</td>
+                    <td>{{address.phone}}</td>
+                    <td>
+                        <div class="btn-group" role="group">
+						<form method="POST" action="{% url 'accounts-customized-url:delete-address-url' %}" >
+							{% csrf_token %}
+    						<input type="hidden" name="_method" value="DELETE">
+    						<input type="hidden" name="address_id" value="{{address.id}}">
+                        	<a href="{% url 'accounts-customized-url:update-address-url' address.id %}">
+								<button type="button" class="btn btn-default"><i class="tf-pencil2" aria-hidden></i></button>
+							</a>
+							<button type="submit" class="btn btn-default"><i class="tf-ion-close" aria-hidden="true"></i></button>
+						</form>
+                        </div>
+                    </td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <a href="{% url 'accounts-customized-url:add-address-url' %}" class="btn btn-main mt-20">ADD New Address</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -56,7 +56,11 @@ class Address(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_appear = models.DateTimeField(null=True, blank=True)
-
+    
+    @property
+    def country_name(self):
+        return self.country.name
+    
     def __str__(self):
         return f"{self.user}-{self.address}"
     
