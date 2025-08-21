@@ -23,23 +23,6 @@
             </div>
         </div>
     {% endif %}
-    <script>
-        // Run after page load
-        window.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
-                const alert = document.getElementById('messageAlert');
-                if (alert) {
-                    alert.style.transition = 'opacity 1s ease';
-                    alert.style.opacity = '0';
-                    setTimeout(function () {
-                        alert.remove();
-                    }, 3000); // Wait for fade-out before removing
-                }
-            }, 2000); // 2 seconds
-        });
-    </script>
-
-
     <section class="page-header">
         <div class="container">
             <div class="row">
@@ -55,8 +38,6 @@
             </div>
         </div>
     </section>
-
-
 
     <div class="page-wrapper">
     <div class="cart shopping">
@@ -139,6 +120,5 @@
       });
     });
   </script>
-
 
 {% endblock %}
