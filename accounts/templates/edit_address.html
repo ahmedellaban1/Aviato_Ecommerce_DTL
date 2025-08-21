@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block container %}
+{% if messages %}
+		<div class="alert-wrapper">
+			<div id="messageAlert" class="container ">
+				<div class="alertPart mt-50">
+					{% for message in messages %}
+						{% if 'success' in message.tags %}
+							<div class="alert alert-success alert-common alert-dismissible " role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="tf-ion-thumbsup"></i><span>Success! </span>{{message}}
+							</div>
+						{% elif 'error' in message.tags %}
+							<div class="alert alert-danger alert-common alert-dismissible " role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<i class="tf-ion-thumbsup"></i><span>Warning! </span>{{message}}
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+{% endif %}
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">Dashboard</h1>
+					<ol class="breadcrumb">
+						<li><a href="{% url 'products-main-url:home-page-url' %}">Home</a></li>
+						<li class="active">my account</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<section class="user-dashboard page-wrapper">
+	<div class="container">
+		<div class="row">
+		<div class="col-md-12">
+            <ul class="list-inline dashboard-menu text-center">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="order.html">Orders</a></li>
+                <li><a class="active" href="{% url 'accounts-customized-url:client-address-url' %}">Address</a></li>
+                <li><a href="{% url 'accounts-customized-url:profile-details-url' %}">Profile Details</a></li>
+            </ul>
+			<div class="dashboard-wrapper dashboard-user-profile">
+			<div class="media">
+				<div class="text-left" href="">
+                    <h2 class="text-center">Update Address</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <input class="btn btn-main text-center w-100" type="submit" value="Update Now"  
+                            onclick="this.disabled=true; this.innerText='Processing...'; this.form.submit();"
+                        >
+                    </form>
+				</div>
+			</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}

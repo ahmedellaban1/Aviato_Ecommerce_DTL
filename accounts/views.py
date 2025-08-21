@@ -4,8 +4,9 @@ from django.utils import timezone
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .forms import CreateUserForm, UpdateProfileForm
-from .models import OTP, CustomUser, Profile
+from django.views.decorators.http import require_POST
+from .forms import CreateUserForm, UpdateProfileForm, CreateUpdateAddressForm
+from .models import OTP, CustomUser, Profile, Address
 from etc.choices import USER_TYPE_CHOICES
 from etc.helper_functions import OTP_random_digits
 from etc.gmail_messages import send_registration_otp
@@ -109,7 +110,10 @@ def profile_details_view(request):
     profile = (
         Profile.objects
         .select_related("user")
-        .only("id", "user__first_name", "user__last_name", "user__email", "country", "image", "country", "phone", "date_of_birth", "gender")
+        .only("id", "user__first_name", "user__last_name",
+               "user__email", "image", "country", "phone", 
+               "date_of_birth", "gender"
+        )
         .defer("user__password")
         .get(user=request.user)
     )
@@ -135,3 +139,68 @@ def update_profile_view(request):
         "form": form
     }
     return render(request, 'update_profile.html', context)
+
+
+@login_required
+def client_address_view(request):
+    addresses = Address.objects.only('id', 'company', 'address', 'country', 'phone').filter(user=request.user)
+    
+    context = {
+        "page_title": "Address",
+        "addresses": addresses,
+    }
+    return render(request, 'address.html', context)
+
+
+@login_required
+def add_address_view(request):
+    if request.method == "POST":
+        form = CreateUpdateAddressForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = request.user
+            form.save()
+            messages.success(request, "Address added successfully !")
+            return redirect('accounts-customized-url:client-address-url')
+    else:
+        form = CreateUpdateAddressForm()
+
+    context = {
+        "page_title": "Address",
+        "form": form,
+    }
+    return render(request, 'add_address.html', context)
+
+
+@require_POST
+@login_required
+def delete_address_view(request):
+    method = request.POST.get('_method')
+    if method == "DELETE":
+        address_id = request.POST.get('address_id')
+        address = get_object_or_404(Address, id=int(address_id), user=request.user)
+        address.delete()
+        messages.success(request, "Address deleted successfully!")
+
+    return redirect('accounts-customized-url:client-address-url')
+
+
+@login_required
+def updat_address_view(request, **kwargs):
+    address = get_object_or_404(Address, id=kwargs['pk'], user=request.user)
+    if request.method == "POST":
+        form = CreateUpdateAddressForm(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Address updated successfully!")
+            return redirect('accounts-customized-url:client-address-url')
+        else:
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = CreateUpdateAddressForm(instance=address)
+
+    context = {
+        "page_title": f"Update address {address.address[:10]}",
+        "form": form
+    }
+    return render(request, 'edit_address.html', context)
