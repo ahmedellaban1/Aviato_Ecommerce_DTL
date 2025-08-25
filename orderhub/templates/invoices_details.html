@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block container %}
+
+	<!-- Page Header -->
+	<section class="page-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="content">
+						<h1 class="page-name">Inovoice details</h1>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'products-main-url:home-page-url' %}">Home</a></li>
+                            <li class=""><a href="{% url 'orderhub-main-url:all-inovices-url' %}">My orders</a></li>
+                            <li class="active">Invoice #{{invoice_id}}</li>
+                        </ol>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Products Section -->
+
+
+<!-- Products Section -->
+<section class="products section">
+	<div class="container">
+		<div class="row">
+			{% for item in invoice_items %}
+				<div class="col-md-4">
+					<div class="product-item">
+						<div class="product-thumb">
+							<img class="img-responsive" src="{{ item.main_image }}" alt="{{ item.product_title }}">
+							<div class="preview-meta">
+								<ul>
+									<li>
+                                        <span>{{item.color_name}}</span>
+									</li>
+									<li>
+                                        <span>{{item.size_name}} </span>
+									</li>
+                                    <li>
+                                        <span>{{item.quantity}}</span>
+                                    </li>
+								</ul>
+							</div>
+						</div>
+						<div class="product-content">
+							<h4>
+								<a href="{% url 'products-main-url:product-details-url' pk=item.product_real_id %}">
+									{{ item.product_title }}
+								</a>
+							</h4>
+							<p class="price">${{ item.product_price }}</p>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>
+{% endblock %}
