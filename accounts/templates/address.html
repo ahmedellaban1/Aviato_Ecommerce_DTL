@@ -63,23 +63,23 @@
               <tbody>
                 {% for address in addresses %}
                     <tr>
-                    <td>{{address.company}}</td>
-                    <td>{{address.address}}</td>
-                    <td>{{address.country_name}}</td>
-                    <td>{{address.phone}}</td>
-                    <td>
-                        <div class="btn-group" role="group">
-						<form method="POST" action="{% url 'accounts-customized-url:delete-address-url' %}" >
-							{% csrf_token %}
-    						<input type="hidden" name="_method" value="DELETE">
-    						<input type="hidden" name="address_id" value="{{address.id}}">
-                        	<a href="{% url 'accounts-customized-url:update-address-url' address.id %}">
-								<button type="button" class="btn btn-default"><i class="tf-pencil2" aria-hidden></i></button>
-							</a>
-							<button type="submit" class="btn btn-default"><i class="tf-ion-close" aria-hidden="true"></i></button>
-						</form>
-                        </div>
-                    </td>
+                      <td>{{address.company}}</td>
+                      <td>{{address.address}}</td>
+                      <td>{{address.country_name}}</td>
+                      <td>{{address.phone}}</td>
+                        <td>
+                          <div class="btn-group" role="group">
+                            <form method="POST" action="{% url 'accounts-customized-url:delete-address-url' %}" >
+                              {% csrf_token %}
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="address_id" value="{{address.id}}">
+                                <a href="{% url 'accounts-customized-url:update-address-url' address.id %}">
+                                  <button type="button" class="btn btn-default"><i class="tf-pencil2" aria-hidden></i></button>
+                                </a>
+                              <button type="submit" class="btn btn-default"><i class="tf-ion-close" aria-hidden="true"></i></button>
+                            </form>
+                          </div>
+                        </td>
                     </tr>
                 {% endfor %}
               </tbody>
