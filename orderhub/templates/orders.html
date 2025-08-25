@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block container %}
+
+<section class="page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="content">
+					<h1 class="page-name">Dashboard</h1>
+					<ol class="breadcrumb">
+						<li><a href="{% url 'products-main-url:home-page-url' %}">Home</a></li>
+						<li class="active">my account</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="user-dashboard page-wrapper">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<ul class="list-inline dashboard-menu text-center">
+					<li><a href="dashboard.html">Dashboard</a></li>
+					<li><a class="active" href="">Orders</a></li>
+					<li><a href="{% url 'accounts-customized-url:client-address-url' %}">Address</a></li>
+					<li><a href="{% url 'accounts-customized-url:profile-details-url' %}">Profile Details</a></li>
+				</ul>
+				<div class="dashboard-wrapper user-dashboard">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Order ID</th>
+									<th>Date</th>
+									<th>Items</th>
+									<th>Total Price</th>
+									<th>Status</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+                                {% for invoice in invoices %}
+                                    <tr>
+                                        <td>#{{invoice.id}}</td>
+                                        <td>{{invoice.created_at}}</td>
+                                        <td>{{invoice.order_count}}</td>
+                                        <td>${{invoice.total_price}}</td>
+                                        <td><span class="label label-primary">{{invoice.status}}</span></td>
+										<form method='POST' action="{% url 'orderhub-main-url:inovice-details-url' %}">
+											{% csrf_token %}
+											<input type="hidden" name="invoice_id" value="{{invoice.id}}">
+											<td><input type="submit" class="btn btn-default" value="View"></td>
+										</form>
+                                    </tr>
+                                {% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}

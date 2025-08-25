@@ -1,12 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Invoice, OrderItem, PaymentLog, ProductVariant
-from products.models import ProductMedia, ProductColor, ProductSize, Product
+from django.db.models.functions import Concat
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
-from etc.choices import INVOICE_STATUS
-from decimal import Decimal
 from django.contrib import messages
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Count, F, Subquery, OuterRef, Value, CharField
+from decimal import Decimal
+from .models import Invoice, OrderItem, PaymentLog, ProductVariant
+from products.models import ProductMedia, ProductColor, ProductSize, Product
+from etc.choices import INVOICE_STATUS
+from django.conf import settings
+
 
 
 @login_required
@@ -96,3 +99,75 @@ def add_to_cart_view(request, *args, **kwargs):
     messages.error(request,"something went wrong")
     # Redirect to avoid re-submission (PRG)
     return redirect('products-main-url:product-details-url', pk=product.id)
+
+
+@login_required
+def all_invoice_view(request):
+    invoices = (
+        Invoice.objects
+        .filter(user=request.user)
+        .annotate(order_count=Count('order_items')) 
+        .only(
+            'id', 'total_price', 'status', 'created_at'
+        ).order_by('-created_at')[:5]
+    )
+    
+    context = {
+        "page_title": 'My Orders',
+        "invoices": invoices,
+
+    }
+    return render(request, 'orders.html', context)
+
+
+@login_required
+def invoice_details_view(request):
+    invoice_id = int(request.POST.get('invoice_id'))
+
+    # Subquery for main image
+    main_image_sq = ProductMedia.objects.filter(
+        product=OuterRef('product__product'),
+        is_main=True
+    ).values('file_url')[:1]
+
+    invoice_items = (
+        OrderItem.objects
+        .filter(invoice__id=invoice_id, invoice__user=request.user)
+        .select_related(
+            'invoice',
+            'product__product',
+            'product__color__color__name',
+            'product__size__size__name',
+        )
+        .annotate(
+            inv_id=F("invoice__id"),
+            invoice_status=F("invoice__status"),
+            invoice_created_at=F("invoice__created_at"),
+            product_title=F("product__product__title"),
+            roduct_fk_id=F("product_id"),
+            product_real_id=F("product__product__id"),        
+            product_price=F("product__product__price"),
+            size_name=F("product__size__size__name"),
+            color_name=F("product__color__color__name"), 
+            main_image=Concat(
+            Value(settings.MEDIA_URL),
+            Subquery(main_image_sq),
+            output_field=CharField()
+
+        ),        )
+        .values(
+            "inv_id", "invoice_status", "invoice_created_at",
+            "id", "quantity", "total_price", "product_real_id",
+            "product_title", "product_price",
+            "color_name", "size_name",
+            "main_image"
+        )
+        .order_by("-invoice_created_at", "-inv_id", "-id")
+    )
+
+    context = {
+        "page_title": f"Order #{invoice_id}",
+        "invoice_id": invoice_id,
+        "invoice_items": invoice_items,
+    }
+    return render(request, "invoices_details.html", context)
