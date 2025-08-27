@@ -10,6 +10,7 @@ from .models import OTP, CustomUser, Profile, Address
 from etc.choices import USER_TYPE_CHOICES
 from etc.helper_functions import OTP_random_digits
 from etc.gmail_messages import send_registration_otp
+from etc.decorators import client_required
 
 
 
@@ -106,6 +107,7 @@ def log_out_view(request):
 
 
 @login_required
+@client_required
 def profile_details_view(request):
     profile = (
         Profile.objects
@@ -125,6 +127,7 @@ def profile_details_view(request):
 
 
 @login_required
+@client_required
 def update_profile_view(request):
     profile = get_object_or_404(Profile, user=request.user)
     if request.method == "POST":
@@ -142,6 +145,7 @@ def update_profile_view(request):
 
 
 @login_required
+@client_required
 def client_address_view(request):
     addresses = Address.objects.only('id', 'company', 'address', 'country', 'phone').filter(user=request.user)
     
@@ -153,6 +157,7 @@ def client_address_view(request):
 
 
 @login_required
+@client_required
 def add_address_view(request):
     if request.method == "POST":
         form = CreateUpdateAddressForm(request.POST)
@@ -174,6 +179,7 @@ def add_address_view(request):
 
 @require_POST
 @login_required
+@client_required
 def delete_address_view(request):
     method = request.POST.get('_method')
     if method == "DELETE":
@@ -186,6 +192,7 @@ def delete_address_view(request):
 
 
 @login_required
+@client_required
 def updat_address_view(request, **kwargs):
     address = get_object_or_404(Address, id=kwargs['pk'], user=request.user)
     if request.method == "POST":
