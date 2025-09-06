@@ -9,10 +9,13 @@ from .models import Invoice, OrderItem, PaymentLog, ProductVariant
 from products.models import ProductMedia, ProductColor, ProductSize, Product
 from etc.choices import INVOICE_STATUS
 from django.conf import settings
+from etc.decorators import client_required
+
 
 
 
 @login_required
+@client_required
 def products_cart_view(request):
     product_media_qs = ProductMedia.objects.only(
         'id', 'product_id' ,'file_url','alt_text'
@@ -49,6 +52,7 @@ def products_cart_view(request):
 
 
 @login_required
+@client_required
 def add_to_cart_view(request, *args, **kwargs):
     if request.method == 'POST':
         data = {key: int(request.POST[key]) for key in request.POST if key != 'csrfmiddlewaretoken'}
@@ -102,6 +106,7 @@ def add_to_cart_view(request, *args, **kwargs):
 
 
 @login_required
+@client_required
 def all_invoice_view(request):
     invoices = (
         Invoice.objects
@@ -121,6 +126,7 @@ def all_invoice_view(request):
 
 
 @login_required
+@client_required
 def invoice_details_view(request):
     invoice_id = int(request.POST.get('invoice_id'))
 
